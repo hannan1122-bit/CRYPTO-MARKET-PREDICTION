@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import numpy as np
 
-def get_klines(symbol="BTCUSDT", interval="4h", limit=1000, start_time=None):
+def get_klines(symbol="BTCUSDT", interval="1h", limit=1000, start_time=None):
     url = "https://api.binance.com/api/v3/klines"
     params = {
         "symbol": symbol,
@@ -48,7 +48,8 @@ def get_pre_process_data():
         "taker_buy_base_vol", "taker_buy_quote_vol", "ignore"
     ])
 
-    df["close_time"] = pd.to_datetime(df["close_time"], unit="ms")
+    df["close_time"] = pd.to_datetime(df["close_time"], unit="ms", utc=True).dt.tz_convert("Asia/Karachi")
+
     df.sort_values("close_time", inplace=True)
 
     df["target"] = df["close"].shift(-1)

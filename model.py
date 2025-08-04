@@ -1,6 +1,9 @@
 from DataHandiling import get_pre_process_data
 # from xgboost import XGBRegressor
 import numpy as np
+from tensorflow.keras.callbacks import EarlyStopping
+
+early_stop = EarlyStopping(monitor='val_loss', patience=10)
 
 
 # model.py
@@ -21,11 +24,11 @@ scaler = MinMaxScaler()
 scaled_data = scaler.fit_transform(df)
 
 # Save the scaler
-joblib.dump(scaler, "scaler.save")
+# joblib.dump(scaler, "scaler.save")
 
 # Prepare data
 X, Y = [], []
-sequence_length = 60
+sequence_length = 72
 for i in range(sequence_length, len(scaled_data)):
     X.append(scaled_data[i-sequence_length:i])
     Y.append(scaled_data[i])
@@ -34,14 +37,18 @@ Y = np.array(Y)
 
 # Model
 model = Sequential([
-    LSTM(256, input_shape=(X.shape[1], X.shape[2]), activation='tanh', return_sequences=True),
+    LSTM(512, input_shape=(X.shape[1], X.shape[2]), activation='tanh', return_sequences=True),
     LSTM(128, activation='tanh'),
     Dense(scaled_data.shape[1])
 ])
 model.compile(optimizer='adam', loss='mse')
 
 # Train model
-model.fit(X, Y, epochs=100, batch_size=10)
+train_size = int(0.8 * len(X))
+X_train, X_test = X[:train_size], X[train_size:]
+Y_train, Y_test = Y[:train_size], Y[train_size:]
+model.fit(X_train, Y_train, epochs=100, batch_size=10, validation_data=(X_test, Y_test), callbacks=[early_stop])
+
 
 # Save the trained model
 model.save("lstm_model.h5")
