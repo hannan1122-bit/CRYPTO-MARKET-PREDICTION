@@ -156,7 +156,7 @@ export default function Page() {
 
             {/* Original Prices Graph */}
             <section className="mb-14">
-              <h2 className="text-2xl font-bold text-red-600 text-center mb-2">Original Prices</h2>
+              <h2 className="text-3xl font-bold text-red-600 text-center mb-2">Original Prices</h2>
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={data.original} margin={{ top: 60, right: 30, left: 60, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#444" />
@@ -201,7 +201,7 @@ export default function Page() {
 
             {/* Predicted Prices Graph */}
             <section className="mb-14">
-              <h2 className="text-2xl font-bold text-red-600 text-center mb-2">Predicted Prices</h2>
+              <h2 className="text-3xl font-bold text-red-600 text-center mb-2">Predicted Prices</h2>
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={data.predicted} margin={{ top: 60, right: 30, left: 60, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#444" />
