@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import numpy as np
 
 def get_klines(symbol="BTCUSDT", interval="4h", limit=1000, start_time=None):
     url = "https://api.binance.com/api/v3/klines"
